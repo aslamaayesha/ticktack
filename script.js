@@ -1,4 +1,3 @@
-
 let currentPlayer = 'X';
 const board = ['', '', '', '', '', '', '', '', ''];
 const winningCombos = [
@@ -19,7 +18,7 @@ function checkWinner() {
 
 function handleClick(event) {
     const { id } = event.target;
-    if (!board[id]) {
+    if (!board[id] && currentPlayer === 'X') {
         board[id] = currentPlayer;
         event.target.textContent = currentPlayer;
         const winner = checkWinner();
@@ -28,7 +27,7 @@ function handleClick(event) {
             resetGame();
             return;
         }
-        currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
+        currentPlayer = 'O';
         setTimeout(computerTurn, 500); // Simulate computer's turn after a delay
     }
 }
@@ -38,6 +37,11 @@ function computerTurn() {
         if (!cell) acc.push(index);
         return acc;
     }, []);
+    if (emptyCells.length === 0) {
+        alert("It's a draw!");
+        resetGame();
+        return;
+    }
     const randomIndex = Math.floor(Math.random() * emptyCells.length);
     const computerChoice = emptyCells[randomIndex];
     board[computerChoice] = 'O';
